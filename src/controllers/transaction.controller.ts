@@ -35,7 +35,7 @@ export class TransactionController {
         const data = {
             "school_id": "65b0e6293e9f76a9694d84b4",
             "amount": 100,
-            "callback_url": "https://google.com"
+            "callback_url": "https://school-backend-u8f0.onrender.com/transactions/webhook/status-update"
         }
         data["sign"] = this.jwtService.sign(data, { secret: "edvtest01" })
 

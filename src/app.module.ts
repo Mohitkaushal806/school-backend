@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://test-user:edviron@edvironassessment.ub8p5.mongodb.net/test?retryWrites=true&w=majority&appName=edvironAssessment', {
+    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/default', {
       connectionFactory: (connection) => {
         connection.on('connected', () => {
           console.log('Connected to MongoDB');

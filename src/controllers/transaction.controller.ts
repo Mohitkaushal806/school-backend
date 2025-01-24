@@ -59,7 +59,7 @@ export class TransactionController {
             console.error('Error calling external API:', error.response?.data || error.message);
             throw error;
         }
-    }
+    }                                               
 
     @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Post('/webhook/status-update')

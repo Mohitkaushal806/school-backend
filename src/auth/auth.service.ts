@@ -21,26 +21,4 @@ export class AuthService {
     return null;
   }
 
-  // Function to generate the sign
-  generateSign = (payload: Record<string, any>, pgKey: string): string => {
-    // Step 1: Sort the keys of the payload alphabetically
-    const sortedKeys = Object.keys(payload).sort();
-
-    // Step 2: Concatenate the key-value pairs into a single string
-    let concatenatedString = '';
-    for (const key of sortedKeys) {
-      if (payload[key] !== undefined && payload[key] !== null && payload[key] !== '') {
-        concatenatedString += `${key}=${payload[key]}&`;
-      }
-    }
-
-    // Step 3: Append the secret key (pgKey)
-    concatenatedString = concatenatedString.slice(0, -1); // Remove trailing "&"
-    concatenatedString += pgKey;
-
-    // Step 4: Generate the HMAC-SHA256 hash
-    const hash = this.jwtService.sign(concatenatedString, {secret: pgKey});
-
-    return hash;
-  };
 }

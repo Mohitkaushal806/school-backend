@@ -1,30 +1,35 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { TransactionService } from '../services/transaction.service';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
 @Controller('transactions')
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService, private readonly jwtService: JwtService, private readonly httpService: HttpService) { }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Get()
     @ApiOperation({ summary: 'Fetch all transactions with status and details' })
     async getAllCollectRequests() {
         return this.transactionService.getAllCollectRequests();
     }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Get('/school/:school_id')
     async getCollectRequestsBySchool(@Param('school_id') schoolId: string) {
         return this.transactionService.getCollectRequestsBySchool(schoolId);
     }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Get('/status/:custom_order_id')
     async getCollectRequestStatus(@Param('custom_order_id') customOrderId: string) {
         return this.transactionService.getCollectRequestStatus(customOrderId);
     }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Post('/create-collect-request')
     async createCollectRequest() {
         const data = {
@@ -54,9 +59,9 @@ export class TransactionController {
             console.error('Error calling external API:', error.response?.data || error.message);
             throw error;
         }
-        return null;
     }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Post('/webhook/status-update')
     @ApiOperation({ summary: 'Webhook to update transaction status' })
     @ApiBody({
@@ -82,6 +87,7 @@ export class TransactionController {
         return this.transactionService.updateTransactionStatus(payload);
     }
 
+    @UseGuards(JwtAuthGuard) // Protect this endpoint
     @Post('/update-status')
     @ApiOperation({ summary: 'Manually update the status of a transaction' })
     @ApiBody({
